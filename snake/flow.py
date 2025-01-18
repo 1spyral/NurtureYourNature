@@ -1,3 +1,4 @@
+from personality import generate
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -17,7 +18,7 @@ def sms_reply():
         print("Missing required data in request.")
 
     # Optional: Respond back to sender
-    response = f"Thanks for your message: '{message_content}'" if message_content else "Unable to process your message."
+    response = generate(message_content)
 
     return f"""
     <Response>
