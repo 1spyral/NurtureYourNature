@@ -1,5 +1,5 @@
-from audio_decode import transcribe
-from audio_capture import record
+from tools.audio_decode import transcribe
+from tools.audio_capture import record
 
 def main():
     path = "output.wav"
