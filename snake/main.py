@@ -4,7 +4,7 @@ from audio_capture import record
 def main():
     path = "output.wav"
     print("Audio recording")
-    record(5, path)
+    record(10, path)
     print("Decoding recording")
     text = transcribe(path)
     print(text)
