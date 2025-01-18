@@ -1,4 +1,33 @@
 body {
     background: linear-gradient(to right, #ff7e5f, #feb47b);
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+#root {
+	height: 100%;
+	width: 100%;
+}
+
+.app {
+	display: flex;
+	height: 100%;
+	width: 100%;
+}
+
+.chatlist {
+    height: 100%;
+    width: 30%;
+    background-color: #fff; 
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+.chat {
+    height: 100%;
+    width: 70%;
+    background-color: #b93838; 
+    overflow-y: auto;
 }
 

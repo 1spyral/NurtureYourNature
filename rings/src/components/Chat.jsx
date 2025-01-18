@@ -26,13 +26,13 @@ export default function Chat() {
 
     if (chatId === null) {
         return (
-            <div>
-                null chat
+            <div className="chat">
+                Select a chat
             </div>
         )
     } else {
         return (
-            <div>
+            <div className="chat">
                 {messages.map((message, index) => <Message key={index} />)}
             </div>
         )
