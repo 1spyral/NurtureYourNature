@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export default function Message({ role, content }) {
 
 
-    return <div>{role}: {content}</div>
+    return <div className={`message ${role == "assistant" ? "assistant" : "user"}`}>{role}: {content}</div>
 }
 
 Message.propTypes = {
