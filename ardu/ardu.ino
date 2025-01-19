@@ -15,9 +15,15 @@ void setup() {
   servo3.attach(4);
   
   // Initialize servos to center position
-  servo1.write(90);
-  servo2.write(90);
-  servo3.write(90);
+  
+  //water
+  servo1.write(180);
+
+  //throw
+  servo2.write(180);
+
+  //smile
+  servo3.write(0);
 }
 
 void loop() {
