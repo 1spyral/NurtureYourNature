@@ -15,8 +15,6 @@ def decode(path):
 
     mel = whisper.log_mel_spectrogram(audio, n_mels=model.dims.n_mels).to(model.device)
 
-    _, probs = model.detect_language(mel)
-
     result = whisper.decode(model, mel, options)
 
     return result.text

@@ -1,9 +1,26 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, Query
+from contextlib import asynccontextmanager
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from twilio.twiml.voice_response import VoiceResponse
+from twilio.twiml.messaging_response import MessagingResponse
+from apiRouter import apiRouter
+from plant import plant
+from tools.text import text
 
 app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Starting server...")
+    prompt = "Hello! How was your day?"
+    id = plant.new()
+    plant.create(id, prompt, "assistant")
+    text(prompt)
+    yield
+    print("Shutting down server...")
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,30 +30,51 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(apiRouter)
+
 @app.post("/start")
 async def start():
+    prompt = "Hello! How was your day?"
+    id = plant.new()
+    plant.create(id, prompt, "assistant")
     response = VoiceResponse()
-    response.say("Hello. Press 1 or 2.")
-    response.gather(input="speech", num_digits=1, action="/user_response")
+    response.say(prompt)
+    response.gather(input="speech", action=f"/user_response?id={id}")
     return HTMLResponse(str(response))
 
 @app.post("/user_response")
-async def user_response(SpeechResult: str = Form(None)):
+async def user_response(SpeechResult: str = Form(None), id: int = Query(None)):
     print(SpeechResult)
     response = VoiceResponse()
 
     # Check for speech input
     if SpeechResult:
-        speech = SpeechResult.lower()  # Normalize speech result (e.g., "exit")
-        if "exit" in speech:
-            response.say("Thank you for calling. Goodbye!")
-            response.hangup()
-        else:
-            response.say(f"You said: {speech}. Press 1 for more options or say 'exit' to end the call.")
-            response.gather(input="speech", num_digits=1, action="/user_response")
-    
+        speech = SpeechResult.lower() 
+        plant.create(id, speech)
+        response.say(plant.run(id).text.value)
+        response.gather(input="speech", action=f"/user_response?id={id}")
     else:
-        response.say("Sorry, I didn't get that. Please press 1 for a fun fact, or say 'exit' to end the call.")
-        response.gather(input="speech", num_digits=1, action="/user_response")
+        response.say("Sorry, I didn't hear anything. Ending the call...")
+        response.hangup()
 
     return HTMLResponse(str(response))
+
+@app.post("/sms")
+async def sms_reply(Body: str = Form(None), From: str = Form(None)):
+    if Body and From:
+        print(f"Received SMS from {From}: {Body}")
+    else:
+        print("Missing required data in request.")
+
+    plant.create(0, Body)
+
+    response = MessagingResponse()
+
+    response.message(plant.run(0).text.value)
+
+    return HTMLResponse(str(response))
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend:app", host="127.0.0.1", port=8000, reload=True)

@@ -1,15 +1,15 @@
 import os
 from dotenv import load_dotenv, set_key, find_dotenv
-from tools.ai_service import client
+from tools.ai_service import ai_client
 
 # Create assistants and threads
-therapist_assistant = client.beta.assistants.create(
+therapist_assistant = ai_client.beta.assistants.create(
     name="Therapist",
     instructions="You are a trendy therapist disguised as a friend that is trying to dig deep into the user's psyche and provide them with the best advice possible. Only respond with 20 words or less.",
     model="gpt-4o-mini"
 )
 
-health_assistant = client.beta.assistants.create(
+health_assistant = ai_client.beta.assistants.create(
     name="Health Monitor",
     instructions="You are responsible for determining whether the user is taking care of their health or not. You can only respond with 'yes', 'no', 'unknown'.",
     model="gpt-4o-mini"

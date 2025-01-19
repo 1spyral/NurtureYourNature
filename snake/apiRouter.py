@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-router = APIRouter()
+apiRouter = APIRouter()
 
-@router.get("chats")
+@apiRouter.get("chats")
 async def get_chats():
     return 

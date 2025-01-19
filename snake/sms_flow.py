@@ -1,19 +1,14 @@
 from personality import generate
 from flask import Flask, request, jsonify
-from arduino_snake import move_motor
-from twilio.rest import Client
+from tools.arduino_snake import move_motor
+from tools.twilio_service import twilio_client
+from config import TO, FROM
 num_no = 0
 
 app = Flask(__name__)
 
-# Twilio credentials
-account_sid = ''
-auth_token = ''
-client = Client(account_sid, auth_token)
 
 @app.route("/sms", methods=["POST"])
-
-
 def sms_reply():
     
     # Debug: Log the incoming request data
@@ -55,10 +50,10 @@ def sms_reply():
 
 if __name__ == "__main__":
     # Send initial welcome message
-    client.messages.create(
+    twilio_client.messages.create(
         body="Hi! I'm your friendly health monitoring bot. How are you feeling today?",
-        from_='+',
-        to='+',
+        to=TO,
+        from_=FROM,
     )
     
     # Run the Flask app
