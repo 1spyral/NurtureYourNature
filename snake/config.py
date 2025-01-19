@@ -10,3 +10,6 @@ FROM = os.getenv("FROM")
 ML_HOST = os.getenv("ML_HOST")
 
 OPENAI_TOKEN = os.getenv("OPENAI_TOKEN")
+
+THERAPIST_ID = os.getenv("THERAPIST_ID")
+HEALTH_ID = os.getenv("HEALTH_ID")

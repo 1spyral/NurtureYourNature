@@ -10,13 +10,17 @@ cffi==1.17.1
 charset-normalizer==3.4.1
 click==8.1.8
 colorama==0.4.6
+distro==1.9.0
 fastapi==0.115.6
 filelock==3.16.1
 frozenlist==1.5.0
 fsspec==2024.12.0
 h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
 idna==3.10
 Jinja2==3.1.5
+jiter==0.8.2
 llvmlite==0.43.0
 MarkupSafe==3.0.2
 more-itertools==10.6.0
@@ -25,6 +29,7 @@ multidict==6.1.0
 networkx==3.4.2
 numba==0.60.0
 numpy==2.0.2
+openai==1.59.8
 openai-whisper==20240930
 propcache==0.2.1
 pycparser==2.22

@@ -1,4 +1,4 @@
-from personality import generate
+from tools.thread import Thread
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -17,8 +17,9 @@ def sms_reply():
     else:
         print("Missing required data in request.")
 
-    # Optional: Respond back to sender
-    response = generate(message_content)
+    thread = Thread()
+    thread.create(message_content)
+    response = thread.run(1), thread.run(2)
 
     return f"""
     <Response>
