@@ -1,7 +1,12 @@
+import PropTypes from 'prop-types';
+
+export default function Message({ role, content }) {
 
 
-export default function Message() {
+    return <div>{role}: {content}</div>
+}
 
-
-    return <></>
+Message.propTypes = {
+    role: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
 }

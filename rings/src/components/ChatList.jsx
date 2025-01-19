@@ -20,16 +20,14 @@ export default function ChatList() {
     }    
 
     useEffect(() => {
-        const intervalId = setInterval(getChats, 3000);
+        const intervalId = setInterval(getChats, 200);
 
         return () => clearInterval(intervalId);
     }, []);
 
     return (
         <div className="chatlist">
-            {chats.map(chat => {
-                <ChatButton id={chat.id} name={chat.name} key={chat.id} />
-            })}
+            {chats.map(chat => <ChatButton id={chat.id} name={`Chat #${chat.id}`} key={chat.id} />)}
         </div>
     )
 }

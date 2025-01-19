@@ -15,4 +15,7 @@ class Plant:
     def run(self, id, type = 1):
         return self.threads[id].run(type)
     
+    def get_chats(self):
+        return [{"id": str(i)} for i in range(len(self.threads))]
+    
 plant = Plant()
