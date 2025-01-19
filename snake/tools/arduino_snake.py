@@ -16,6 +16,8 @@ time.sleep(2)
 
 print("Arduino connected")
 
+sad_count = 0
+
 #pin a = 1, pin b = 2
 def move_motor(pin, speed):
     command = f"{pin}{speed}\n"
@@ -24,10 +26,17 @@ def move_motor(pin, speed):
 
 
 def sad():
+    global sad_count
+    sad_count += 1
+    if sad_count == 1:
+        throw()
     move_motor(3, 180)
     time.sleep(0.5)
     
 def happy():
+    global sad_count
+    sad_count = 0
+
     pygame.mixer.music.load('happy.mp3')
     pygame.mixer.music.play()
     move_motor(3, 0)
@@ -85,8 +94,6 @@ def throw():
     
     time.sleep(1)
     move_motor(2, 180)
-
-happy()
 
 # while True:
     # print("Enter command: pin")

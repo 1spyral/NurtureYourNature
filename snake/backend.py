@@ -7,13 +7,15 @@ from twilio.twiml.messaging_response import MessagingResponse
 from apiRouter import apiRouter
 from plant import plant
 from tools.text import text
+import json
+from tools.arduino_snake import happy, pour
 
 app = FastAPI()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting server...")
-    prompt = "Hello! How was your day?"
+    prompt = "Hey! Did you get any sleep at the hackathon yet?"
     id = plant.new()
     plant.create(id, prompt, "assistant")
     text(prompt)
@@ -34,7 +36,7 @@ app.include_router(apiRouter)
 
 @app.post("/start")
 async def start():
-    prompt = "Hello! How was your day?"
+    prompt = "... Hello! Have you talked to anyone today?"
     id = plant.new()
     plant.create(id, prompt, "assistant")
     response = VoiceResponse()
@@ -44,7 +46,7 @@ async def start():
 
 @app.get("/start")
 async def start():
-    prompt = "Hello! How was your day?"
+    prompt = "... Hello! Have you talked to anyone today?"
     id = plant.new()
     plant.create(id, prompt, "assistant")
     response = VoiceResponse()
@@ -62,7 +64,20 @@ async def user_response(SpeechResult: str = Form(None), id: int = Query(None)):
     if SpeechResult:
         speech = SpeechResult.lower() 
         plant.create(id, speech)
-        response.say(plant.run(id).text.value)
+
+        reply = json.loads(plant.run(id).text.value)
+
+        print(reply)
+
+        message = reply["message"]
+        lifestyle = reply["lifestyle"]
+
+        if lifestyle == "GOOD":
+            happy()
+        elif lifestyle == "BAD":
+            pour()
+
+        response.say(message)
         response.gather(input="speech", action=f"/user_response?id={id}")
     else:
         response.say("Sorry, I didn't hear anything. Ending the call...")
@@ -81,7 +96,19 @@ async def sms_reply(Body: str = Form(None), From: str = Form(None)):
 
     response = MessagingResponse()
 
-    response.message(plant.run(0).text.value, to=From)
+    reply = json.loads(plant.run(0).text.value)
+
+    print(reply)
+
+    message = reply["message"]
+    lifestyle = reply["lifestyle"]
+
+    if lifestyle == "GOOD":
+        happy()
+    elif lifestyle == "BAD":
+        pour()
+
+    response.message(message, to=From)
 
     return HTMLResponse(str(response))
 

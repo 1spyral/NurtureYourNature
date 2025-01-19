@@ -1,6 +1,7 @@
 from tools.ai_service import ai_client
 from collections import deque
 from config import THERAPIST_ID, HEALTH_ID
+import json5
 
 class Thread:
     def __init__(self):
@@ -33,14 +34,15 @@ class Thread:
 
         message = messages.data[0].content[0].text.value
 
+        print(message)
+
         self.messages.appendleft({
             "role": "assistant",
-            "content": message
+            "content": json5.loads(message)["message"]
         })
 
-        print(self.messages)
-
         return messages.data[0].content[0]
+    
 
     def get_messages(self):
         return self.messages
