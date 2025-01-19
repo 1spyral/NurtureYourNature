@@ -33,13 +33,11 @@ export default function ChatList() {
             </div>
             {}
             {chats.map(chat => (
-                <div className = "buttonwrapper" onClick={() => setSelectedChat({ id: chat.id, name: `Chat #${chat.id}` })}>
-                <ChatButton 
-                    id={chat.id} 
-                    name={`Chat #${chat.id}`} 
-                    key={chat.id} 
-                     
-                />
+                <div className = "buttonwrapper" onClick={() => setSelectedChat({ id: chat.id, name: `Chat #${chat.id}` })} key={chat.id}>
+                    <ChatButton 
+                        id={chat.id} 
+                        name={`Chat #${chat.id}`} 
+                    />
                 </div>
             ))}
         </div>

@@ -6,7 +6,8 @@ def call():
     call = twilio_client.calls.create(
         to=TO,
         from_=FROM,
-        url=ML_HOST + "/start"
+        url=ML_HOST + "/start",
+        method="POST"
     )
 
     print(call.sid)

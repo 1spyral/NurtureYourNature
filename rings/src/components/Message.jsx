@@ -9,7 +9,7 @@ export default function Message({ role, content }) {
                 </div>
             )}
             <div className="message-content">
-                {role}: {content}
+                {role === "assistant" ? "Nate" : "You"}: {content}
             </div>
         </div>
     );

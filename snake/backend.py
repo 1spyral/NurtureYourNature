@@ -42,6 +42,17 @@ async def start():
     response.gather(input="speech", action=f"/user_response?id={id}")
     return HTMLResponse(str(response))
 
+@app.get("/start")
+async def start():
+    prompt = "Hello! How was your day?"
+    id = plant.new()
+    plant.create(id, prompt, "assistant")
+    response = VoiceResponse()
+    response.say(prompt)
+    response.gather(input="speech", action=f"/user_response?id={id}")
+    return HTMLResponse(str(response))
+
+
 @app.post("/user_response")
 async def user_response(SpeechResult: str = Form(None), id: int = Query(None)):
     print(SpeechResult)
@@ -70,7 +81,7 @@ async def sms_reply(Body: str = Form(None), From: str = Form(None)):
 
     response = MessagingResponse()
 
-    response.message(plant.run(0).text.value)
+    response.message(plant.run(0).text.value, to=From)
 
     return HTMLResponse(str(response))
 
