@@ -39,7 +39,7 @@ export default function Chat() {
     } else {
         return (
             <div className="chat">
-                {messages.map((message, index) => <Message role={message.role} content={message.content} key={index} />)}
+                {messages.slice().reverse().map((message, index) => <Message role={message.role} content={message.content} key={index} />)}
             </div>
         )
     }

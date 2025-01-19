@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { BACKEND_HOST } from "../config";
 import ChatButton from "./ChatButton";
 
-
 export default function ChatList() {
     const [chats, setChats] = useState([]);
+    const [selectedChat, setSelectedChat] = useState(null);
 
     async function getChats() {
         try {
@@ -17,7 +17,7 @@ export default function ChatList() {
         } catch (error) {
             console.error(error);
         }
-    }    
+    }
 
     useEffect(() => {
         const intervalId = setInterval(getChats, 200);
@@ -27,7 +27,21 @@ export default function ChatList() {
 
     return (
         <div className="chatlist">
-            {chats.map(chat => <ChatButton id={chat.id} name={`Chat #${chat.id}`} key={chat.id} />)}
+            {}
+            <div className="chat-header">
+                {selectedChat ? `Chat #${selectedChat.id}` : "Select a Chat"}
+            </div>
+            {}
+            {chats.map(chat => (
+                <div className = "buttonwrapper" onClick={() => setSelectedChat({ id: chat.id, name: `Chat #${chat.id}` })}>
+                <ChatButton 
+                    id={chat.id} 
+                    name={`Chat #${chat.id}`} 
+                    key={chat.id} 
+                     
+                />
+                </div>
+            ))}
         </div>
-    )
+    );
 }
