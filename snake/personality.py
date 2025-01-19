@@ -20,6 +20,7 @@ therapist_thread = client.beta.threads.create()
 health_thread = client.beta.threads.create()
 
 def generate(prompt):
+    
     return generate_persona1(prompt), generate_persona2(prompt)
 
 def generate_persona1(prompt):
@@ -71,12 +72,3 @@ def generate_persona2(prompt):
     # Get the latest message
     messages = client.beta.threads.messages.list(thread_id=health_thread.id)
     return messages.data[0].content[0].text.value
-
-if __name__ == "__main__":
-    print("\nHi! Tell me about your day. What did you do today?\n")
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() in ['quit', 'exit', 'bye']:
-            break
-        response, should_dump = generate(user_input)
-        print("\nAssistant:", response, should_dump, "\n")
